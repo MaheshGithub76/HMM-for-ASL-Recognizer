@@ -291,7 +291,7 @@ def create_hmmlearn_data(dict):
     return seq_len_dict
 
 if __name__ == '__main__':
-    asl= AslDb()
+    asl = AslDb()
     print(asl.df.ix[98, 1])
 
 

@@ -1,4 +1,5 @@
 import warnings
+import numpy as np
 from asl_data import SinglesData
 
 
@@ -22,4 +23,29 @@ def recognize(models: dict, test_set: SinglesData):
     guesses = []
     # TODO implement the recognizer
     # return probabilities, guesses
-    raise NotImplementedError
+    # raise NotImplementedError
+
+    opt_guess = None
+
+    for indx in range(0, len(test_set.get_all_Xlengths())):
+        opt_logL = float('-inf')
+        X, lengths = test_set.get_all_Xlengths()[indx]
+        prob_dict = {}
+        for key, mdl in models.items():
+            try:
+                logL = mdl.score(X, lengths)
+                prob_dict[key] = logL
+            except:
+                logL = float('-inf')
+                prob_dict[key] = logL
+
+            if logL > opt_logL:
+                opt_logL = logL
+                opt_guess = key
+
+        probabilities.append(prob_dict)
+        guesses.append(opt_guess)
+
+    return probabilities, guesses
+
+
